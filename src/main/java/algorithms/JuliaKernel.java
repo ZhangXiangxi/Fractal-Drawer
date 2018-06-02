@@ -5,9 +5,9 @@ package algorithms;
  * Contact him on xiangxi.zhang.cs@gmail.com
  */
 public class JuliaKernel implements FractalKernel {
-    public final static double DEFAULT_X_CENTER = -0.5271824;
-    public final static double DEFAULT_Y_CENTER = -0.6124885999999998;
-    public final static double DEFAULT_GRAPH_WIDTH = 1e-5;
+    public final static double DEFAULT_X_CENTER = 0;
+    public final static double DEFAULT_Y_CENTER = 0;
+    public final static double DEFAULT_GRAPH_WIDTH = 3;
 
     public final static double DEFAULT_X = -0.8;
     public final static double DEFAULT_Y = 0.156;

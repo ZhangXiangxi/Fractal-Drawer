@@ -66,8 +66,8 @@ public class ControlPanel extends JPanel {
         graphSelectionButtonPanel.add(mandelbrotButton);
         graphSelectionButtonPanel.add(juliaButton);
         graphSelectionPanel.add(graphSelectionButtonPanel);
-        mandelbrotButton.addChangeListener(e->{if(mandelbrotButton.isSelected()) {drawPanel.setKernelSelection(0);setJuliaParameterFields(false);}});
-        juliaButton.addChangeListener(e->{if (juliaButton.isSelected()) {drawPanel.setKernelSelection(1);setJuliaParameterFields(true);}});
+        mandelbrotButton.addChangeListener(e->{if(mandelbrotButton.isSelected()) changeGraphSelection(0);});
+        juliaButton.addChangeListener(e->{if (juliaButton.isSelected()) changeGraphSelection(1);});
 
         add(graphSelectionPanel);
 
@@ -156,5 +156,12 @@ public class ControlPanel extends JPanel {
             juliaY.setEnabled(false);
             juliaY.setText("无效");
         }
+    }
+    public void changeGraphSelection(int selection) {
+        drawPanel.setKernelSelection(selection);
+        setJuliaParameterFields(selection == 1);
+        xField.setText(drawPanel.kernels[selection].defaultX() + "");
+        yField.setText(drawPanel.kernels[selection].defaultY() + "");
+        widthField.setText(drawPanel.kernels[selection].defaultWidth() + "");
     }
 }
