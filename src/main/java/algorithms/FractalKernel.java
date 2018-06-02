@@ -9,4 +9,5 @@ public interface FractalKernel {
     public abstract double defaultX();
     public abstract double defaultY();
     public abstract double defaultWidth();
+    int getMaxIterations();
 }
