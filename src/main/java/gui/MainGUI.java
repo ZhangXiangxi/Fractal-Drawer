@@ -22,14 +22,14 @@ public class MainGUI extends JFrame {
     // TODO: reformat the function structures here
     private void initialMainPanel() {
         mainPanel.setLayout(null);
-        drawPanel = new DrawPanel(360, 340);
-        drawPanel.setBounds(0, 0, 360, 340);
+        drawPanel = new DrawPanel(1000, 800);
+        drawPanel.setBounds(0, 0, 1000, 800);
         mainPanel.add(drawPanel);
-        controlPanel.setBounds(360, 0, 90, 340);
+        controlPanel.setBounds(1000, 0, 120, 800);
         mainPanel.add(controlPanel);
     }
     private void initialControlPanel() {
-        controlPanel.setSize(90, 340);
+        controlPanel.setSize(120, 800);
         // TODO: size adjustment
 
         controlPanel.setBackground(Color.GRAY);
@@ -44,7 +44,7 @@ public class MainGUI extends JFrame {
     public static void main(String[] args) {
         MainGUI mainGUI = new MainGUI();
         mainGUI.setVisible(true);
-        mainGUI.setSize(450, 340);
+        mainGUI.setSize(1120, 800);
         mainGUI.setResizable(false);
         // TODO: size adjustment
     }
