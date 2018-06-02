@@ -117,6 +117,7 @@ public class DrawPanel extends JPanel {
         graphics.drawLine(i, j, i, j+1);
     }
     private class CatchMouseClick implements MouseListener {
+        private Point startPoint;
         @Override
         public void mouseClicked(MouseEvent e) {
             Point clickAt = e.getPoint();
@@ -128,12 +129,23 @@ public class DrawPanel extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            // pass
+            startPoint = e.getPoint();
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-
+            Point endPoint = e.getPoint();
+            double xStart = graphWindow.getGraphX(startPoint.x);
+            double xEnd = graphWindow.getGraphX(endPoint.x);
+            double yStart = graphWindow.getGraphY(startPoint.y);
+            double yEnd = graphWindow.getGraphY(endPoint.y);
+            double newX = (xStart + xEnd) / 2.0;
+            double newY = (yStart + yEnd) / 2.0;
+            double newWidth = xStart - xEnd;
+            newWidth = newWidth < 0 ? -1.0 * newWidth : newWidth;
+            controlPanel.xField.setText(newX + "");
+            controlPanel.yField.setText(newY + "");
+            controlPanel.widthField.setText(newWidth + "");
         }
 
         @Override

@@ -11,6 +11,7 @@ public class ControlPanel extends JPanel {
     public DrawPanel drawPanel;
     public JTextField xField;
     public JTextField yField;
+    public JTextField widthField;
 
     public ControlPanel(DrawPanel drawPanel) {
         this.drawPanel = drawPanel;
@@ -47,7 +48,7 @@ public class ControlPanel extends JPanel {
         centerTextPanel.setLayout(new GridLayout(3,1));
         xField = new JTextField(DrawPanel.DEFAULT_X_CENTER+"");
         yField = new JTextField(DrawPanel.DEFAULT_Y_CENTER+"");
-        JTextField widthField = new JTextField(DrawPanel.DEFAULT_GRAPH_WIDTH + "");
+        widthField = new JTextField(DrawPanel.DEFAULT_GRAPH_WIDTH + "");
         centerTextPanel.add(xField);
         centerTextPanel.add(yField);
         centerTextPanel.add(widthField);
