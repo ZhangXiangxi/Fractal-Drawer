@@ -22,6 +22,7 @@ public class GraphWindow {
     private int windowCenterX;
     private int windowCenterY;
     private double ratio;
+    private double windowWidth;
 
     public GraphWindow(double graphCenterX, double graphCenterY, double graphWidth, int windowWidth, int windowHeight) {
         this.graphCenterX = graphCenterX;
@@ -29,6 +30,14 @@ public class GraphWindow {
         windowCenterX = windowWidth / 2;
         windowCenterY = windowHeight / 2;
         ratio = graphWidth / (double) windowWidth;
+        this.windowWidth = (double)windowWidth;
+    }
+    public void recenter(double graphCenterX, double graphCenterY) {
+        this.graphCenterX = graphCenterX;
+        this.graphCenterY = graphCenterY;
+    }
+    public void rescale(double newGraphWidth) {
+        ratio = newGraphWidth / windowWidth;
     }
 
     public double getGraphX(int windowX) {
