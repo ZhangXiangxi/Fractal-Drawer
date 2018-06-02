@@ -1,5 +1,8 @@
 package gui;
 
+import algorithms.ColorSelector;
+import algorithms.CrazyColorSelector;
+import algorithms.GradualColorSelector;
 import algorithms.GraphWindow;
 import javafx.util.Pair;
 
@@ -15,6 +18,7 @@ public class DrawPanel extends JPanel {
     public final int HEIGHT;
     private Color[][] colors;
     public final GraphWindow graphWindow;
+    public ColorSelector colorSelector;
 
     double ESCAPERADIUS = 4.0;
     int MAXITERNUMBER = 5000;
@@ -27,6 +31,7 @@ public class DrawPanel extends JPanel {
         setBackground(Color.WHITE);
         setSize(WIDTH, HEIGHT);
         colors = new Color[WIDTH][HEIGHT];
+        colorSelector = new GradualColorSelector(MAXITERNUMBER);
     }
     public void drawMandelbrot() {
         calculateMandelbrotColors();
@@ -62,20 +67,9 @@ public class DrawPanel extends JPanel {
         return -1.0;
     }
     private Color getColor(double color) {
-        Color colorLeft = Color.YELLOW;
-        Color colorRight = Color.CYAN;
-        float[] leftComponent = colorLeft.getRGBColorComponents(null);
-        float[] rightComponent = colorRight.getRGBColorComponents(null);
-        if (color > 0) {
-            float ratio = (float)color / (float)MAXITERNUMBER;
-            float[] finalColor = new float[3];
-            for(int i = 0; i < 3; i++)
-                finalColor[i] = leftComponent[i] + ratio * (rightComponent[i] - leftComponent[i]);
-            return new Color(finalColor[0], finalColor[1], finalColor[2]);
-        }
-        else
-            return Color.CYAN;
+        return colorSelector.getColor(color);
     }
+
     private Color getMandelbrotColorAt(int i, int j) {
         return getColor(iter(graphWindow.getGraphX(i), graphWindow.getGraphY(j)));
     }

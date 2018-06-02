@@ -15,8 +15,8 @@ public class GradualColorSelector implements ColorSelector {
 
     @Override
     public Color getColor(double iterCount) {
-        Color colorLeft = Color.YELLOW;
-        Color colorRight = Color.CYAN;
+        Color colorLeft = Color.BLACK;
+        Color colorRight = Color.RED;
         float[] leftComponent = colorLeft.getRGBColorComponents(null);
         float[] rightComponent = colorRight.getRGBColorComponents(null);
         if (iterCount > 0) {
@@ -27,6 +27,6 @@ public class GradualColorSelector implements ColorSelector {
             return new Color(finalColor[0], finalColor[1], finalColor[2]);
         }
         else
-            return Color.CYAN;
+            return colorRight;
     }
 }
