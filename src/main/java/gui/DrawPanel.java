@@ -50,7 +50,7 @@ public class DrawPanel extends JPanel {
         setColorSelection(selection);
     }
     public void setColorSelection(int colorSelectionIndex) {
-        colorSelectionIndex %= colorSelectors.length;
+        colorSelectionIndex %= colorSelectors[0].length;
         colorSelection = colorSelectionIndex;
     }
     public void setKernelSelection(int kernelSelection) {
@@ -94,10 +94,11 @@ public class DrawPanel extends JPanel {
         graphWindow.rescale(graphWidth);
     }
     private void registerColorSelectors() {
-        colorSelectors = new ColorSelector[kernels.length][2];
+        colorSelectors = new ColorSelector[kernels.length][3];
         for(int i = 0; i < kernels.length; i++) {
             colorSelectors[i][0] = new GradualColorSelector(kernels[i].getMaxIterations());
             colorSelectors[i][1] = new CrazyColorSelector();
+            colorSelectors[i][2] = new HsvColorSelector(kernels[i].getMaxIterations());
         }
     }
     private void registerKernels() {
