@@ -17,7 +17,7 @@ public class DrawPanel extends JPanel {
     public final GraphWindow graphWindow;
 
     double ESCAPERADIUS = 4.0;
-    int MAXITERNUMBER = 1000;
+    int MAXITERNUMBER = 5000;
 
     public DrawPanel(int width, int height) {
         super();
@@ -62,10 +62,19 @@ public class DrawPanel extends JPanel {
         return -1.0;
     }
     private Color getColor(double color) {
-        if (color >= 0)
-            return Color.WHITE;
+        Color colorLeft = Color.YELLOW;
+        Color colorRight = Color.CYAN;
+        float[] leftComponent = colorLeft.getRGBColorComponents(null);
+        float[] rightComponent = colorRight.getRGBColorComponents(null);
+        if (color > 0) {
+            float ratio = (float)color / (float)MAXITERNUMBER;
+            float[] finalColor = new float[3];
+            for(int i = 0; i < 3; i++)
+                finalColor[i] = leftComponent[i] + ratio * (rightComponent[i] - leftComponent[i]);
+            return new Color(finalColor[0], finalColor[1], finalColor[2]);
+        }
         else
-            return Color.BLACK;
+            return Color.CYAN;
     }
     private Color getMandelbrotColorAt(int i, int j) {
         return getColor(iter(graphWindow.getGraphX(i), graphWindow.getGraphY(j)));
