@@ -58,6 +58,20 @@ public class DrawPanel extends JPanel {
     public void setKernelSelection(int kernelSelection) {
         this.kernelSelection = kernelSelection;
     }
+    public void setJuliaParameters(String xString, String yString) {
+        double x, y;
+        try {
+            x = Double.parseDouble(xString);
+        } catch (NumberFormatException e) {
+            x = JuliaKernel.DEFAULT_X;
+        }
+        try {
+            y = Double.parseDouble(yString);
+        } catch (NumberFormatException e) {
+            y = JuliaKernel.DEFAULT_Y;
+        }
+        ((JuliaKernel)kernels[1]).setJuliaParameters(x, y);
+    }
     public void setCenter(String xString, String yString) {
         double xCenter, yCenter;
         try {
@@ -88,7 +102,7 @@ public class DrawPanel extends JPanel {
     }
     private void registerKernels() {
         kernels = new FractalKernel[2];
-        kernels[0] = new MandelbrotKernel(maxIterations, 4.0);
+        kernels[0] = new MandelbrotKernel(maxIterations, 2.0);
         kernels[1] = new JuliaKernel(maxIterations, 2.0);
     }
     public void drawGraph() {
