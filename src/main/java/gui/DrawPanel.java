@@ -1,8 +1,10 @@
 package gui;
 
+import algorithms.GraphWindow;
+import javafx.util.Pair;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 /**
  * Created by Xiangxi on 2018/6/1.
@@ -12,11 +14,16 @@ public class DrawPanel extends JPanel {
     public final int WIDTH;
     public final int HEIGHT;
     private Color[][] colors;
+    public final GraphWindow graphWindow;
+
+    double ESCAPERADIUS = 4.0;
+    int MAXITERNUMBER = 1000;
 
     public DrawPanel(int width, int height) {
         super();
         WIDTH = width;
         HEIGHT = height;
+        graphWindow = new GraphWindow(-0.743030, 0.126433, 0.016110, WIDTH, HEIGHT);
         setBackground(Color.WHITE);
         setSize(WIDTH, HEIGHT);
         colors = new Color[WIDTH][HEIGHT];
@@ -32,7 +39,38 @@ public class DrawPanel extends JPanel {
             }
         }
     }
+    private double iter(double cx, double cy) {
+        double x = 0;
+        double y = 0;
+        double newx;
+        double newy;
+
+        double smodz = 0;
+        int i = 0;
+        while (i < MAXITERNUMBER) {
+            newx = x * x - y * y + cx;
+            newy = 2 * x * y + cy;
+            x = newx;
+            y = newy;
+            i++;
+
+            smodz = x * x + y * y;
+            if (smodz >= ESCAPERADIUS) {
+                return i;
+            }
+        }
+        return -1.0;
+    }
+    private Color getColor(double color) {
+        if (color >= 0)
+            return Color.WHITE;
+        else
+            return Color.BLACK;
+    }
     private Color getMandelbrotColorAt(int i, int j) {
+        return getColor(iter(graphWindow.getGraphX(i), graphWindow.getGraphY(j)));
+    }
+    private Color getTestColorAt(int i, int j) {
         // TODO: put real generation function here
         int iPosition = i / 4;
         int jPosition = j / 4;
