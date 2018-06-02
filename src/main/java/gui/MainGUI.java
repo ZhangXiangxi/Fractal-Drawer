@@ -26,6 +26,7 @@ public class MainGUI extends JFrame {
         mainPanel.add(drawPanel);
         controlPanel = new ControlPanel(drawPanel);
         controlPanel.setBounds(1000, 0, 120, 800);
+        drawPanel.linkToControl(controlPanel);
         mainPanel.add(controlPanel);
     }
     public static void main(String[] args) {

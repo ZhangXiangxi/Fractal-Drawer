@@ -4,6 +4,8 @@ import algorithms.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Created by Xiangxi on 2018/6/1.
@@ -12,15 +14,16 @@ import java.awt.*;
 public class DrawPanel extends JPanel {
     public final int WIDTH;
     public final int HEIGHT;
-    public final static double DEFAULT_X_CENTER = -0.743030;
-    public final static double DEFAULT_Y_CENTER = 0.126433;
-    public final static double DEFAULT_GRAPH_WIDTH = 0.016110;
+    public final static double DEFAULT_X_CENTER = -0.5271824;
+    public final static double DEFAULT_Y_CENTER = -0.6124885999999998;
+    public final static double DEFAULT_GRAPH_WIDTH = 1e-5;
     private Color[][] colors;
     public final GraphWindow graphWindow;
     public ColorSelector[] colorSelectors;
     public FractalKernel[] kernels;
     public int colorSelection = 0;
     public int kernelSelection = 0;
+    public ControlPanel controlPanel;
 
     double escapeRadius = 4.0;
     int maxIterations = 5000;
@@ -35,6 +38,11 @@ public class DrawPanel extends JPanel {
         colors = new Color[WIDTH][HEIGHT];
         registerColorSelectors();
         registerKernels();
+        addMouseListener(new CatchMouseClick());
+    }
+    public void linkToControl(ControlPanel controlPanel) {
+        assert(controlPanel != null);
+        this.controlPanel = controlPanel;
     }
     public void setColorSelection(String colorSelection) {
         int selection;
@@ -107,5 +115,35 @@ public class DrawPanel extends JPanel {
         Graphics graphics = this.getGraphics();
         graphics.setColor(color);
         graphics.drawLine(i, j, i, j+1);
+    }
+    private class CatchMouseClick implements MouseListener {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            Point clickAt = e.getPoint();
+            double newX = graphWindow.getGraphX(clickAt.x);
+            double newY = graphWindow.getGraphY(clickAt.y);
+            controlPanel.xField.setText(newX + "");
+            controlPanel.yField.setText(newY + "");
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            // pass
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
 }
