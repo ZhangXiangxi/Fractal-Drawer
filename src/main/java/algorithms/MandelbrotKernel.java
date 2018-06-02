@@ -7,10 +7,28 @@ package algorithms;
 public class MandelbrotKernel implements FractalKernel{
     public int maxIterations;
     public double escapeRadius;
+    public final static double DEFAULT_X_CENTER = -0.5271824;
+    public final static double DEFAULT_Y_CENTER = -0.6124885999999998;
+    public final static double DEFAULT_GRAPH_WIDTH = 1e-5;
 
     public MandelbrotKernel(int maxIterations, double escapeRadius) {
         this.maxIterations = maxIterations;
         this.escapeRadius = escapeRadius;
+    }
+
+    @Override
+    public double defaultX() {
+        return DEFAULT_X_CENTER;
+    }
+
+    @Override
+    public double defaultY() {
+        return DEFAULT_Y_CENTER;
+    }
+
+    @Override
+    public double defaultWidth() {
+        return DEFAULT_GRAPH_WIDTH;
     }
 
     @Override

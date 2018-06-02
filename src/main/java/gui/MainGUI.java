@@ -24,15 +24,21 @@ public class MainGUI extends JFrame {
         drawPanel = new DrawPanel(1000, 800);
         drawPanel.setBounds(0, 0, 1000, 800);
         mainPanel.add(drawPanel);
+        JPanel emptyPanelLeft = new JPanel();
+        emptyPanelLeft.setBounds(1000, 0, 25, 800);
+        mainPanel.add(emptyPanelLeft);
         controlPanel = new ControlPanel(drawPanel);
-        controlPanel.setBounds(1000, 0, 120, 800);
+        controlPanel.setBounds(1025, 0, 120, 800);
         drawPanel.linkToControl(controlPanel);
         mainPanel.add(controlPanel);
+        JPanel emptyPanelRight = new JPanel();
+        emptyPanelRight.setBounds(1145, 0, 25, 800);
+        mainPanel.add(emptyPanelRight);
     }
     public static void main(String[] args) {
         MainGUI mainGUI = new MainGUI();
         mainGUI.setVisible(true);
-        mainGUI.setSize(1120, 800);
+        mainGUI.setSize(1170, 800);
         mainGUI.setResizable(false);
     }
 }

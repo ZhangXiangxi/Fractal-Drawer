@@ -6,4 +6,7 @@ package algorithms;
  */
 public interface FractalKernel {
     public abstract double depthAt(double x, double y);
+    public abstract double defaultX();
+    public abstract double defaultY();
+    public abstract double defaultWidth();
 }

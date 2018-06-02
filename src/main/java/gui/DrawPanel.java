@@ -14,9 +14,7 @@ import java.awt.event.MouseListener;
 public class DrawPanel extends JPanel {
     public final int WIDTH;
     public final int HEIGHT;
-    public final static double DEFAULT_X_CENTER = -0.5271824;
-    public final static double DEFAULT_Y_CENTER = -0.6124885999999998;
-    public final static double DEFAULT_GRAPH_WIDTH = 1e-5;
+
     private Color[][] colors;
     public final GraphWindow graphWindow;
     public ColorSelector[] colorSelectors;
@@ -25,14 +23,14 @@ public class DrawPanel extends JPanel {
     public int kernelSelection = 0;
     public ControlPanel controlPanel;
 
-    double escapeRadius = 4.0;
     int maxIterations = 5000;
 
     public DrawPanel(int width, int height) {
         super();
         WIDTH = width;
         HEIGHT = height;
-        graphWindow = new GraphWindow(DEFAULT_X_CENTER, DEFAULT_Y_CENTER, DEFAULT_GRAPH_WIDTH, WIDTH, HEIGHT);
+        graphWindow = new GraphWindow(MandelbrotKernel.DEFAULT_X_CENTER, MandelbrotKernel.DEFAULT_Y_CENTER,
+                MandelbrotKernel.DEFAULT_GRAPH_WIDTH, WIDTH, HEIGHT);
         setBackground(Color.WHITE);
         setSize(WIDTH, HEIGHT);
         colors = new Color[WIDTH][HEIGHT];
@@ -57,17 +55,20 @@ public class DrawPanel extends JPanel {
         colorSelectionIndex %= colorSelectors.length;
         colorSelection = colorSelectionIndex;
     }
+    public void setKernelSelection(int kernelSelection) {
+        this.kernelSelection = kernelSelection;
+    }
     public void setCenter(String xString, String yString) {
         double xCenter, yCenter;
         try {
             xCenter = Double.parseDouble(xString);
         } catch (NumberFormatException e) {
-            xCenter = DEFAULT_X_CENTER;
+            xCenter = kernels[kernelSelection].defaultX();
         }
         try {
             yCenter = Double.parseDouble(yString);
         } catch (NumberFormatException e) {
-            yCenter = DEFAULT_Y_CENTER;
+            yCenter = kernels[kernelSelection].defaultY();
         }
         graphWindow.recenter(xCenter, yCenter);
     }
@@ -76,7 +77,7 @@ public class DrawPanel extends JPanel {
         try {
             graphWidth = Double.parseDouble(widthString);
         } catch (NumberFormatException e) {
-            graphWidth = DEFAULT_GRAPH_WIDTH;
+            graphWidth = kernels[kernelSelection].defaultWidth();
         }
         graphWindow.rescale(graphWidth);
     }
@@ -86,8 +87,9 @@ public class DrawPanel extends JPanel {
         colorSelectors[1] = new CrazyColorSelector();
     }
     private void registerKernels() {
-        kernels = new FractalKernel[1];
-        kernels[0] = new MandelbrotKernel(maxIterations, escapeRadius);
+        kernels = new FractalKernel[2];
+        kernels[0] = new MandelbrotKernel(maxIterations, 4.0);
+        kernels[1] = new JuliaKernel(maxIterations, 2.0);
     }
     public void drawGraph() {
         calculateColors();
