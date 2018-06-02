@@ -1,10 +1,6 @@
 package gui;
 
-import algorithms.ColorSelector;
-import algorithms.CrazyColorSelector;
-import algorithms.GradualColorSelector;
-import algorithms.GraphWindow;
-import javafx.util.Pair;
+import algorithms.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +14,13 @@ public class DrawPanel extends JPanel {
     public final int HEIGHT;
     private Color[][] colors;
     public final GraphWindow graphWindow;
-    public ColorSelector colorSelector;
+    public ColorSelector[] colorSelectors;
+    public FractalKernel[] kernels;
+    public int colorSelection = 0;
+    public int kernelSelection = 0;
 
-    double ESCAPERADIUS = 4.0;
-    int MAXITERNUMBER = 5000;
+    double escapeRadius = 4.0;
+    int maxIterations = 5000;
 
     public DrawPanel(int width, int height) {
         super();
@@ -31,56 +30,48 @@ public class DrawPanel extends JPanel {
         setBackground(Color.WHITE);
         setSize(WIDTH, HEIGHT);
         colors = new Color[WIDTH][HEIGHT];
-        colorSelector = new GradualColorSelector(MAXITERNUMBER);
+        registerColorSelectors();
+        registerKernels();
     }
-    public void drawMandelbrot() {
-        calculateMandelbrotColors();
+    public void drawGraph() {
+        calculateColors();
         drawColors();
     }
-    private void calculateMandelbrotColors() {
+    public void setColorSelection(String colorSelection) {
+        int selection;
+        try {
+            selection = Integer.parseInt(colorSelection);
+        } catch (NumberFormatException e) {
+            selection = 0;
+        }
+        setColorSelection(selection);
+    }
+    public void setColorSelection(int colorSelectionIndex) {
+        colorSelectionIndex %= colorSelectors.length;
+        colorSelection = colorSelectionIndex;
+    }
+    private void registerColorSelectors() {
+        colorSelectors = new ColorSelector[2];
+        colorSelectors[0] = new GradualColorSelector(maxIterations);
+        colorSelectors[1] = new CrazyColorSelector();
+    }
+    private void registerKernels() {
+        kernels = new FractalKernel[1];
+        kernels[0] = new MandelbrotKernel(maxIterations, escapeRadius);
+    }
+    private void calculateColors() {
         for(int i = 0; i < WIDTH; i++) {
             for(int j = 0; j <HEIGHT; j++) {
-                colors[i][j] = getMandelbrotColorAt(i, j);
+                colors[i][j] = getColorAt(i, j);
             }
         }
     }
-    private double iter(double cx, double cy) {
-        double x = 0;
-        double y = 0;
-        double newx;
-        double newy;
-
-        double smodz = 0;
-        int i = 0;
-        while (i < MAXITERNUMBER) {
-            newx = x * x - y * y + cx;
-            newy = 2 * x * y + cy;
-            x = newx;
-            y = newy;
-            i++;
-
-            smodz = x * x + y * y;
-            if (smodz >= ESCAPERADIUS) {
-                return i;
-            }
-        }
-        return -1.0;
-    }
-    private Color getColor(double color) {
-        return colorSelector.getColor(color);
+    private Color selectColor(double color) {
+        return colorSelectors[colorSelection].getColor(color);
     }
 
-    private Color getMandelbrotColorAt(int i, int j) {
-        return getColor(iter(graphWindow.getGraphX(i), graphWindow.getGraphY(j)));
-    }
-    private Color getTestColorAt(int i, int j) {
-        // TODO: put real generation function here
-        int iPosition = i / 4;
-        int jPosition = j / 4;
-        if ((iPosition + jPosition) % 2 == 0)
-            return Color.BLUE;
-        else
-            return Color.RED;
+    private Color getColorAt(int i, int j) {
+        return selectColor(kernels[kernelSelection].depthAt(graphWindow.getGraphX(i), graphWindow.getGraphY(j)));
     }
     private void drawColors() {
         for(int i = 0; i < WIDTH; i++)

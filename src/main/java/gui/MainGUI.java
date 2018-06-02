@@ -30,14 +30,23 @@ public class MainGUI extends JFrame {
     }
     private void initialControlPanel() {
         controlPanel.setSize(120, 800);
-        // TODO: size adjustment
 
         controlPanel.setBackground(Color.GRAY);
-        controlPanel.setLayout(new GridLayout(1,1));
+        controlPanel.setLayout(new GridLayout(2, 1));
+
+        JPanel colorSelectorPanel = new JPanel();
+        colorSelectorPanel.setLayout(new GridLayout(2, 1));
+        colorSelectorPanel.add(new JLabel("配色方案:"));
+        JTextField colorSelectorField = new JTextField();
+        colorSelectorPanel.add(colorSelectorField);
+        controlPanel.add(colorSelectorPanel);
 
         JPanel buttonPanel = new JPanel();
         JButton drawMBButton = new JButton("Mandelbrot");
-        drawMBButton.addActionListener(e->drawPanel.drawMandelbrot());
+        drawMBButton.addActionListener(e-> {
+            drawPanel.setColorSelection(colorSelectorField.getText());
+            drawPanel.drawGraph();
+        });
         buttonPanel.add(drawMBButton);
         controlPanel.add(buttonPanel);
     }
@@ -46,6 +55,5 @@ public class MainGUI extends JFrame {
         mainGUI.setVisible(true);
         mainGUI.setSize(1120, 800);
         mainGUI.setResizable(false);
-        // TODO: size adjustment
     }
 }
