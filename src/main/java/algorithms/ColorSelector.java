@@ -7,5 +7,5 @@ import java.awt.*;
  * Contact him on xiangxi.zhang.cs@gmail.com
  */
 public interface ColorSelector {
-    public abstract Color getColor(double iterCount);
+    public abstract Color getColor(double colorIndicator);
 }

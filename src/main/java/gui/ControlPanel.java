@@ -135,6 +135,8 @@ public class ControlPanel extends JPanel {
         drawMBButton.addActionListener(e-> {
             drawPanel.setColorSelection(colorSelectorField.getText());
             drawPanel.setCenter(xField.getText(), yField.getText());
+            if (juliaButton.isSelected())
+                drawPanel.setJuliaParameters(juliaX.getText(), juliaY.getText());
             drawPanel.setGraphWidth(widthField.getText());
             drawPanel.drawGraph();
         });

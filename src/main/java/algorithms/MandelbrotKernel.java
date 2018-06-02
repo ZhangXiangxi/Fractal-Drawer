@@ -6,14 +6,14 @@ package algorithms;
  */
 public class MandelbrotKernel implements FractalKernel{
     public int maxIterations;
-    public double escapeRadius;
+    public double escapeRaduisSquare;
     public final static double DEFAULT_X_CENTER = -0.5271824;
     public final static double DEFAULT_Y_CENTER = -0.6124885999999998;
     public final static double DEFAULT_GRAPH_WIDTH = 1e-5;
 
     public MandelbrotKernel(int maxIterations, double escapeRadius) {
         this.maxIterations = maxIterations;
-        this.escapeRadius = escapeRadius;
+        this.escapeRaduisSquare = escapeRadius * escapeRadius;
     }
 
     @Override
@@ -29,6 +29,11 @@ public class MandelbrotKernel implements FractalKernel{
     @Override
     public double defaultWidth() {
         return DEFAULT_GRAPH_WIDTH;
+    }
+
+    @Override
+    public int getMaxIterations() {
+        return maxIterations;
     }
 
     @Override
@@ -48,7 +53,7 @@ public class MandelbrotKernel implements FractalKernel{
             i++;
 
             smodz = x * x + y * y;
-            if (smodz >= escapeRadius) {
+            if (smodz >= escapeRaduisSquare) {
                 return i;
             }
         }

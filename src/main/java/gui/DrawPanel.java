@@ -17,13 +17,11 @@ public class DrawPanel extends JPanel {
 
     private Color[][] colors;
     public final GraphWindow graphWindow;
-    public ColorSelector[] colorSelectors;
+    public ColorSelector[][] colorSelectors;
     public FractalKernel[] kernels;
     public int colorSelection = 0;
     public int kernelSelection = 0;
     public ControlPanel controlPanel;
-
-    int maxIterations = 5000;
 
     public DrawPanel(int width, int height) {
         super();
@@ -34,8 +32,8 @@ public class DrawPanel extends JPanel {
         setBackground(Color.WHITE);
         setSize(WIDTH, HEIGHT);
         colors = new Color[WIDTH][HEIGHT];
-        registerColorSelectors();
         registerKernels();
+        registerColorSelectors();
         addMouseListener(new CatchMouseClick());
     }
     public void linkToControl(ControlPanel controlPanel) {
@@ -96,14 +94,16 @@ public class DrawPanel extends JPanel {
         graphWindow.rescale(graphWidth);
     }
     private void registerColorSelectors() {
-        colorSelectors = new ColorSelector[2];
-        colorSelectors[0] = new GradualColorSelector(maxIterations);
-        colorSelectors[1] = new CrazyColorSelector();
+        colorSelectors = new ColorSelector[kernels.length][2];
+        for(int i = 0; i < kernels.length; i++) {
+            colorSelectors[i][0] = new GradualColorSelector(kernels[i].getMaxIterations());
+            colorSelectors[i][1] = new CrazyColorSelector();
+        }
     }
     private void registerKernels() {
         kernels = new FractalKernel[2];
-        kernels[0] = new MandelbrotKernel(maxIterations, 2.0);
-        kernels[1] = new JuliaKernel(maxIterations, 2.0);
+        kernels[0] = new MandelbrotKernel(5000, 2.0);
+        kernels[1] = new JuliaKernel(500, 2.0);
     }
     public void drawGraph() {
         calculateColors();
@@ -125,7 +125,7 @@ public class DrawPanel extends JPanel {
         return selectColor(kernels[kernelSelection].depthAt(graphWindow.getGraphX(i), graphWindow.getGraphY(j)));
     }
     private Color selectColor(double color) {
-        return colorSelectors[colorSelection].getColor(color);
+        return colorSelectors[kernelSelection][colorSelection].getColor(color);
     }
     private void drawPointAt(int i, int j, Color color) {
         Graphics graphics = this.getGraphics();

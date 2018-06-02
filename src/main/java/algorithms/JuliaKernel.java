@@ -28,15 +28,45 @@ public class JuliaKernel implements FractalKernel {
     }
 
     public int maxIterations;
-    public double escapeRadius;
+    public double escapeRadiusSquare;
+    public double cx, cy;
 
     public JuliaKernel(int maxIterations, double escapeRadius) {
         this.maxIterations = maxIterations;
-        this.escapeRadius = escapeRadius;
+        this.escapeRadiusSquare = escapeRadius * escapeRadius;
+        cx = DEFAULT_X;
+        cy = DEFAULT_Y;
+    }
+
+    public void setJuliaParameters(double x, double y) {
+        cx = x;
+        cy = y;
+    }
+
+    @Override
+    public int getMaxIterations() {
+        return maxIterations;
     }
 
     @Override
     public double depthAt(double x, double y) {
-        return 0; //TODO:
+        double newX;
+        double newY;
+
+        double smodz = 0;
+        int i = 0;
+        while (i < maxIterations) {
+            newX = x * x - y * y + cx;
+            newY = 2 * x * y + cy;
+            x = newX;
+            y = newY;
+            i++;
+
+            smodz = x * x + y * y;
+            if (smodz >= escapeRadiusSquare) {
+                return i;
+            }
+        }
+        return -1.0;
     }
 }
